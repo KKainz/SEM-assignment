@@ -29,6 +29,7 @@ class ConnectFour:
             self.__player_name_2 = player_name_2 if player_name_2 else "Player 2"
 
         self.__current_player = self.__player_name_1
+        self.__last_move_instruction = None
 
         # Init empty board
         # The first depth of the array represents the columns,
@@ -73,7 +74,16 @@ class ConnectFour:
         pass
 
     def get_move_instruction(self) -> MoveResult:
-        pass
+        """ Returns the move instructions for the current state
+        Returns
+        -------
+        MoveResult
+            Information about the current game
+        """
+        if self.__last_move_instruction:
+            return self.__last_move_instruction
+        name = self.__current_player + ("'" if self.__current_player[-1].lower() == 's' else '\'s')
+        return MoveResult(f"It is {name} turn. Place a stone into a marked column", False, False)
 
     def __set_slot(self, slot: int):
         if 1 > slot > 7:
@@ -96,11 +106,13 @@ class ConnectFour:
 
 
 if __name__ == '__main__':
-    game_1 = ConnectFour(True, "My Name")
+    game_1 = ConnectFour(True, "Hans")
     print(game_1.player_name_1)
     print(game_1.player_name_2)
 
     print(game_1.get_board)
+
+    print(game_1.get_move_instruction().message)
 
     exit(0)
     # for later testing place some stones and print board
