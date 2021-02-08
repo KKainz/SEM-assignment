@@ -28,16 +28,19 @@ class ConnectFour:
         else:
             self.__player_name_2 = player_name_2 if player_name_2 else "Player 2"
 
+        self.__current_player = self.__player_name_1
+
         # Init empty board
         # The first depth of the array represents the columns,
         # the array within are the rows.
         self.__board = [
-            ["", "", "", "", "", "", ""],  # Column 1
-            ["", "", "", "", "", "", ""],  # Column 2
-            ["", "", "", "", "", "", ""],  # Column 3
-            ["", "", "", "", "", "", ""],
-            ["", "", "", "", "", "", ""],
-            ["", "", "", "", "", "", ""]
+            ["", "", "", "", "", ""],  # Column 1
+            ["", "", "", "", "", ""],  # Column 2
+            ["", "", "", "", "", ""],  # Column 3
+            ["", "", "", "", "", ""],
+            ["", "", "", "", "", ""],
+            ["", "", "", "", "", ""],
+            ["", "", "", "", "", ""]
             # Row 1, Row 2, Row 3...
         ]
 
@@ -54,7 +57,7 @@ class ConnectFour:
         pass
 
     def set_stone(self, slot: int) -> MoveResult:
-        pass
+		pass
 
     def get_move_instruction(self) -> MoveResult:
         pass
@@ -68,7 +71,7 @@ class ConnectFour:
     def __check_slot(self, slot: int) -> bool:
         pass
 
-    def __recommend_slot(self, player_1: bool) -> int:
+    def __recommend_slot(self) -> int:
         pass
 
 
