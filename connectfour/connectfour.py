@@ -54,10 +54,23 @@ class ConnectFour:
 
     @property
     def get_board(self) -> str:
-        pass
+        """str: ASCII style representation of the board"""
+        ret = ""
+        first_line = "".join(list(map(lambda x: " " + str(x + 1), range(7)))) + "\n"
+        for row in range(6):
+            ret += "│"
+            for col in range(7):
+                item = self.__board[col][row]
+
+                if row == 0 and item == "":
+                    first_line += " V"
+
+                ret += (item if item else " ") + "│"
+            ret += "\n"
+        return first_line + "\n" + ret + "└─────────────┘"
 
     def set_stone(self, slot: int) -> MoveResult:
-		pass
+        pass
 
     def get_move_instruction(self) -> MoveResult:
         pass
@@ -76,6 +89,8 @@ class ConnectFour:
 
 
 if __name__ == '__main__':
-    game_1 = ConnectFour(False, "Test")
+    game_1 = ConnectFour(True, "My Name")
     print(game_1.player_name_1)
     print(game_1.player_name_2)
+
+    print(game_1.get_board)
