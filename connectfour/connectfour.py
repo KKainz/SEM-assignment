@@ -76,7 +76,13 @@ class ConnectFour:
         pass
 
     def __set_slot(self, slot: int):
-        pass
+        if 1 > slot > 7:
+            return
+
+        col = self.__board[slot - 1]
+        last_open_index = len(col) - 1 - col[::-1].index("")
+        place = "X" if self.__current_player == self.__player_name_1 else "O"
+        col[last_open_index] = place
 
     def __check_status(self) -> str:
         pass
