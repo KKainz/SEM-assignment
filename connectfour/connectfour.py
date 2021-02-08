@@ -82,7 +82,8 @@ class ConnectFour:
         pass
 
     def __check_slot(self, slot: int) -> bool:
-        pass
+        col = self.__board[slot - 1]
+        return "" in col
 
     def __recommend_slot(self) -> int:
         pass
