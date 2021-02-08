@@ -62,8 +62,8 @@ class ConnectFour:
             for col in range(7):
                 item = self.__board[col][row]
 
-                if row == 0 and item == "":
-                    first_line += " V"
+                if row == 0:
+                    first_line += " V" if item == "" else "  "
 
                 ret += (item if item else " ") + "│"
             ret += "\n"
@@ -101,3 +101,13 @@ if __name__ == '__main__':
     print(game_1.player_name_2)
 
     print(game_1.get_board)
+
+    exit(0)
+    # for later testing place some stones and print board
+    slots = [1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7]
+
+    for slt in slots:
+        print("#######################")
+        print("Place stone in: " + str(slt))
+        game_1.set_stone(slt)
+        print(game_1.get_board)
