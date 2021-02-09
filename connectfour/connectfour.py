@@ -94,8 +94,40 @@ class ConnectFour:
         place = "X" if self.__current_player == self.__player_name_1 else "O"
         col[last_open_index] = place
 
-    def __check_status(self) -> str:
-        pass
+    def __check_status(self, slot: int) -> bool:
+        """checks if current player has won with placing the stone in slot"""
+
+        slot = slot - 1
+        stone_type = "X" if self.__current_player == self.__player_name_1 else "O"
+        index_last_stone = (slot, self.__board[slot].index(stone_type))
+
+        def filter_list(lst):
+            """removes out of bound coordinates"""
+            return [t for t in lst if -1 < t[0] < 7 and -1 < t[1] < 6]
+
+        def map_values(lst):
+            """replaces coordinates with current vaules"""
+            return map(lambda x: self.__board[x[0]][x[1]], lst)
+
+        vertical = list(map(lambda x: (index_last_stone[0], x + index_last_stone[1] - 3), range(7)))
+        horizontal = list(map(lambda x: (x + index_last_stone[0] - 3, index_last_stone[1]), range(7)))
+        diagonal_1 = list(map(lambda x, y: (y[0], x[1]), vertical, horizontal))
+        diagonal_2 = list(map(lambda x, y: (y[0], x[1]), vertical[::-1], horizontal))
+
+        check_placed_stone = [vertical, horizontal, diagonal_1, diagonal_2]
+
+        for i in range(len(check_placed_stone)):
+            check_placed_stone[i] = list(map_values(filter_list(check_placed_stone[i])))
+
+        for stones in check_placed_stone:
+            count_in_row = 0
+            for stone in stones:
+                if stone == stone_type:
+                    count_in_row += 1
+                else:
+                    count_in_row = 0
+                if count_in_row == 4:
+                    return True
 
     def __check_slot(self, slot: int) -> bool:
         col = self.__board[slot - 1]
