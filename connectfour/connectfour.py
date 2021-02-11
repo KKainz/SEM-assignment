@@ -55,7 +55,6 @@ class ConnectFour:
     def player_name_2(self) -> str:
         return self.__player_name_2
 
-    @property
     def get_board(self) -> str:
         """str: ASCII style representation of the board"""
         ret = ""
