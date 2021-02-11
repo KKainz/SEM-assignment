@@ -1,3 +1,5 @@
+import random
+
 
 class MoveResult:
     """ Provides instruction/information after move:
@@ -165,7 +167,8 @@ class ConnectFour:
         return "" in col
 
     def __recommend_slot(self) -> int:
-        pass
+        open_slots = list([i for i, x in enumerate(map(lambda x: x[0], self.__board)) if x == ""])
+        return open_slots[random.randint(0, len(open_slots) - 1)] + 1
 
 
 if __name__ == '__main__':
