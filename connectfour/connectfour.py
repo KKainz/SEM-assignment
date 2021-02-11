@@ -22,6 +22,22 @@ class MoveResult:
 
 
 class ConnectFour:
+    """ A class witch allows you to play connect four.\n
+    \n
+    You can see the game board with the method get_board()\n
+    Set a stone with the method set_stone(slot: int)
+    With the get_move_instruction method, you get instruction
+    on whose turn it is.\n
+    \n
+    You provide player names and whether you want to play against a bot.
+
+    Attributes
+    ----------
+    player_name_1: str
+        The name of player 1.
+    player_name_2: str
+        The name of player 2.
+    """
     def __init__(self, vs_bot: bool, player_name_1: str, player_name_2: str = None):
         self.__vs_bot = vs_bot
         self.__player_name_1 = player_name_1 if player_name_1 else "Player" if vs_bot else "Player 1"
@@ -118,9 +134,7 @@ class ConnectFour:
         return MoveResult(f"It is {name} turn. Place a stone into a marked column.", False, False)
 
     def __set_slot(self, slot: int):
-        if 1 > slot > 7:
-            return
-
+        """Sets the stone in the provided slot for the current player"""
         col = self.__board[slot - 1]
         last_open_index = len(col) - 1 - col[::-1].index("")
         place = "X" if self.__current_player == self.__player_name_1 else "O"
@@ -138,7 +152,7 @@ class ConnectFour:
             return [t for t in lst if -1 < t[0] < 7 and -1 < t[1] < 6]
 
         def map_values(lst):
-            """replaces coordinates with current vaules"""
+            """replaces coordinates with current values"""
             return map(lambda x: self.__board[x[0]][x[1]], lst)
 
         vertical = list(map(lambda x: (index_last_stone[0], x + index_last_stone[1] - 3), range(7)))
