@@ -45,6 +45,10 @@ class ConnectFour:
             self.__player_name_2 = "Bot"
         else:
             self.__player_name_2 = player_name_2 if player_name_2 else "Player 2"
+            
+        if self.__player_name_1 == self.__player_name_2:
+            self.__player_name_1 += "_1"
+            self.__player_name_2 += "_2"
 
         self.__current_player = self.__player_name_1
         self.__last_move_instruction = None
