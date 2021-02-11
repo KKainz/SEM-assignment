@@ -96,7 +96,7 @@ class ConnectFour:
                 self.__last_move_instruction = None
                 self.__last_move_instruction = self.get_move_instruction()
 
-            if self.__vs_bot and not self.__last_move_instruction.game_won:
+            if self.__vs_bot and not self.__last_move_instruction.game_won and self.__current_player == self.__player_name_2:
                 slot_bot = self.__recommend_slot()
                 self.__last_move_instruction = self.set_stone(slot_bot)
 
@@ -115,7 +115,7 @@ class ConnectFour:
         if self.__last_move_instruction:
             return self.__last_move_instruction
         name = self.__current_player + ("'" if self.__current_player[-1].lower() == 's' else '\'s')
-        return MoveResult(f"It is {name} turn. Place a stone into a marked column", False, False)
+        return MoveResult(f"It is {name} turn. Place a stone into a marked column.", False, False)
 
     def __set_slot(self, slot: int):
         if 1 > slot > 7:
@@ -162,10 +162,12 @@ class ConnectFour:
                     return True
 
     def __check_slot(self, slot: int) -> bool:
+        """Checks if a stone can be placed within the lost"""
         col = self.__board[slot - 1]
         return "" in col
 
     def __recommend_slot(self) -> int:
+        """Selects a random and valid slot for the bot"""
         open_slots = list([i for i, x in enumerate(map(lambda x: x[0], self.__board)) if x == ""])
         return open_slots[random.randint(0, len(open_slots) - 1)] + 1
 
@@ -179,12 +181,10 @@ if __name__ == '__main__':
 
     print(game_1.get_move_instruction().message)
 
-    exit(0)
-    # for later testing place some stones and print board
     slots = [1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7]
 
     for slt in slots:
         print("#######################")
         print("Place stone in: " + str(slt))
         game_1.set_stone(slt)
-        print(game_1.get_board)
+        print(game_1.get_board())
