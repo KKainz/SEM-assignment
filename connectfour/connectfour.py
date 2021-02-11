@@ -71,7 +71,38 @@ class ConnectFour:
         return first_line + "\n" + ret + "└─────────────┘"
 
     def set_stone(self, slot: int) -> MoveResult:
-        pass
+        """ Checks if the selected slot for the stone is possible and then places the stone
+
+        Attributes:
+        -------------
+        slot: int
+            Slot Player wants to place the stone in
+
+        Returns:
+        ----------
+        MoveResult
+            Information about the current game
+        """
+        if self.__check_slot(slot):
+            self.__set_slot(slot)
+
+            if self.__check_status(slot):
+                self.__last_move_instruction = MoveResult(f'{self.__current_player} wins!', False, True)
+            elif "" not in map(lambda x: x[0], self.__board):
+                return MoveResult(f'Board is full - Game Over', False, True)
+            else:
+                self.__current_player = self.__player_name_1 if self.__current_player != self.__player_name_1 else self.__player_name_2
+                self.__last_move_instruction = None
+                self.__last_move_instruction = self.get_move_instruction()
+
+            if self.__vs_bot and not self.__last_move_instruction.game_won:
+                slot_bot = self.__recommend_slot()
+                self.__last_move_instruction = self.set_stone(slot_bot)
+
+        else:
+            self.__last_move_instruction = MoveResult(f'Please choose a different slot, {self.__current_player}', True, False)
+
+        return self.__last_move_instruction
 
     def get_move_instruction(self) -> MoveResult:
         """ Returns the move instructions for the current state
