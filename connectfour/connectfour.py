@@ -31,12 +31,14 @@ class ConnectFour:
     \n
     You provide player names and whether you want to play against a bot.
 
-    Attributes
+    Parameters
     ----------
+    vs_bot: bool
+        Specifies if the second player is a bot.
     player_name_1: str
         The name of player 1.
     player_name_2: str
-        The name of player 2.
+        The name of player 2, if player 2 is not a bot.
     """
     def __init__(self, vs_bot: bool, player_name_1: str, player_name_2: str = None):
         self.__vs_bot = vs_bot
@@ -69,10 +71,12 @@ class ConnectFour:
 
     @property
     def player_name_1(self) -> str:
+        """The name of player 1"""
         return self.__player_name_1
 
     @property
     def player_name_2(self) -> str:
+        """The name of player 2, if you play vs bot, then the name is 'Bot'"""
         return self.__player_name_2
 
     def get_board(self) -> str:
@@ -94,13 +98,13 @@ class ConnectFour:
     def set_stone(self, slot: int) -> MoveResult:
         """ Checks if the selected slot for the stone is possible and then places the stone
 
-        Attributes:
-        -------------
-        slot: int
-            Slot Player wants to place the stone in
-
-        Returns:
+        Parameters
         ----------
+        slot: int
+            Slot in which the current player wants to place the stone in
+
+        Returns
+        -------
         MoveResult
             Information about the current game
         """
@@ -110,10 +114,11 @@ class ConnectFour:
             if self.__check_status(slot):
                 self.__last_move_instruction = MoveResult(f'{self.__current_player} wins!', False, True)
             elif "" not in map(lambda x: x[0], self.__board):
+                # Checks if board is full
                 return MoveResult(f'Board is full - Game Over', False, True)
             else:
                 self.__current_player = self.__player_name_1 if self.__current_player != self.__player_name_1 else self.__player_name_2
-                self.__last_move_instruction = None
+                self.__last_move_instruction = None  # need to be None that self.get_move_instruction() return defaut message.
                 self.__last_move_instruction = self.get_move_instruction()
 
             if self.__vs_bot and not self.__last_move_instruction.game_won and self.__current_player == self.__player_name_2:
@@ -139,16 +144,20 @@ class ConnectFour:
 
     def __set_slot(self, slot: int):
         """Sets the stone in the provided slot for the current player"""
-        col = self.__board[slot - 1]
-        last_open_index = len(col) - 1 - col[::-1].index("")
-        place = "X" if self.__current_player == self.__player_name_1 else "O"
-        col[last_open_index] = place
+        col = self.__board[slot - 1]  # selects to correct slot where the stone should be placed in
+
+        # Calculates the last open index, for how far the stone will fall down
+        last_open_index = len(col) - 1 - col[::-1].index("")  
+        stone = "X" if self.__current_player == self.__player_name_1 else "O" 
+        col[last_open_index] = stone
 
     def __check_status(self, slot: int) -> bool:
         """checks if current player has won with placing the stone in slot"""
 
-        slot = slot - 1
+        slot = slot - 1  # slot is 0-index rather than 1 of the normal game.
         stone_type = "X" if self.__current_player == self.__player_name_1 else "O"
+
+        # index_last_stone is a coordinate of the last placed stone from the last player
         index_last_stone = (slot, self.__board[slot].index(stone_type))
 
         def filter_list(lst):
@@ -159,16 +168,23 @@ class ConnectFour:
             """replaces coordinates with current values"""
             return map(lambda x: self.__board[x[0]][x[1]], lst)
 
+        # Four list with coordinates of the board are generated. 
+        # They are around the coordinate index_last_stone and reach out 3 extra coordinates in each direction
         vertical = list(map(lambda x: (index_last_stone[0], x + index_last_stone[1] - 3), range(7)))
         horizontal = list(map(lambda x: (x + index_last_stone[0] - 3, index_last_stone[1]), range(7)))
+
+        # The diagonals are the product of the horizontal and vertical lines
+        # On diagonal which is from a reversed vertical line
         diagonal_1 = list(map(lambda x, y: (y[0], x[1]), vertical, horizontal))
         diagonal_2 = list(map(lambda x, y: (y[0], x[1]), vertical[::-1], horizontal))
 
         check_placed_stone = [vertical, horizontal, diagonal_1, diagonal_2]
 
+        # Filters out unwanted coordinates and maps the coordinates to the real values
         for i in range(len(check_placed_stone)):
             check_placed_stone[i] = list(map_values(filter_list(check_placed_stone[i])))
 
+        # Checks if four stones of the same type are in fact together without space
         for stones in check_placed_stone:
             count_in_row = 0
             for stone in stones:
@@ -180,12 +196,18 @@ class ConnectFour:
                     return True
 
     def __check_slot(self, slot: int) -> bool:
-        """Checks if a stone can be placed within the lost"""
+        """Checks if a stone can be placed within the slot"""
         col = self.__board[slot - 1]
-        return "" in col
+        return "" in col  # Will be true if that slot has an empty space 
 
     def __recommend_slot(self) -> int:
         """Selects a random and valid slot for the bot"""
+        # map(lambda x: x[0], self.__board) => will create a list with stones from the first row
+
+        # [i for i, x in enumerate(...) if x == ""] => will remove all the slot which has a stone
+        # in the top row, removes all full columns
+        # The generated list has numbers corresponding to the slot indexs, which are not full and are suitable
+        # for the bot to place a stone
         open_slots = list([i for i, x in enumerate(map(lambda x: x[0], self.__board)) if x == ""])
         return open_slots[random.randint(0, len(open_slots) - 1)] + 1
 
