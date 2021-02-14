@@ -9,5 +9,7 @@ a stone.
 
 ### Method used
 1. A list containing all still available open slots of the board is created. 
-2. The bot chooses a one of these open slots using the 'random.randint'-function. 
+2. The bot chooses a one of these open slots using the 'random.randint'-function. To do so, all slots 
+that still have an open space left are determined with a lambda function and then transferred into a 
+list. From this list the bot chooses a slot for his play move.
  
