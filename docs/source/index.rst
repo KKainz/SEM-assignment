@@ -11,6 +11,7 @@ Welcome to SEM-assigment's documentation!
    :caption: Contents:
 
    modules
+   game_desing
    ki
    sem_questions
 
