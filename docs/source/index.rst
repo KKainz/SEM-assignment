@@ -13,6 +13,7 @@ Welcome to SEM-assigment's documentation!
    modules
    game_desing
    ki
+   test
    sem_questions
 
 
