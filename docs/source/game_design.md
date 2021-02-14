@@ -64,7 +64,7 @@ Y direction
         ["", "", "", "", "", ""]
         # Row 1, Row 2, Row 3...
     ]
-    left_bottom_stone = boar[0][5]  # left_bottom_stone = "X"
+    left_bottom_stone = board[0][5]  # left_bottom_stone = "X"
 ```
 
 It is easy to check if the a specific slot is full, the game board is full and to output the game board to the console.
